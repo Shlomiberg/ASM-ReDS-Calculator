@@ -319,6 +319,8 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
     }
 }
 </style>
+    <!-- Umami Analytics — replace data-website-id with your actual ID -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="450c1514-7141-43ad-9e80-0c82664143c9"></script>
 </head>
 <body>
 
@@ -343,15 +345,15 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
         </div>
         <div class="f-row">
             <label>HF Patients Assessed with ReDS / Month</label>
-            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('patients_mo',-1)">−</button><input type="number" id="patients_mo" value="20" min="1" max="999"><button type="button" class="m-step-btn right" onclick="mStep('patients_mo',1)">+</button></div>
+            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('patients_mo',-1)" data-umami-event="stepper-patients" data-umami-event-direction="down">−</button><input type="number" id="patients_mo" value="20" min="1" max="999"><button type="button" class="m-step-btn right" onclick="mStep('patients_mo',1)" data-umami-event="stepper-patients" data-umami-event-direction="up">+</button></div>
         </div>
         <div class="f-row">
             <label>Reimbursement per Reading ($)</label>
-            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('reimb',-5)">−</button><input type="number" id="reimb" value="55" min="0" max="999"><button type="button" class="m-step-btn right" onclick="mStep('reimb',5)">+</button></div>
+            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('reimb',-5)" data-umami-event="stepper-reimbursement" data-umami-event-direction="down">−</button><input type="number" id="reimb" value="55" min="0" max="999"><button type="button" class="m-step-btn right" onclick="mStep('reimb',5)" data-umami-event="stepper-reimbursement" data-umami-event-direction="up">+</button></div>
         </div>
         <div class="f-row">
             <label>Additional Monthly Overhead ($)</label>
-            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('overhead',-50)">−</button><input type="number" id="overhead" value="250" min="0"><button type="button" class="m-step-btn right" onclick="mStep('overhead',50)">+</button></div>
+            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('overhead',-50)" data-umami-event="stepper-overhead" data-umami-event-direction="down">−</button><input type="number" id="overhead" value="250" min="0"><button type="button" class="m-step-btn right" onclick="mStep('overhead',50)" data-umami-event="stepper-overhead" data-umami-event-direction="up">+</button></div>
         </div>
     </div>
 
@@ -365,7 +367,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
         <div class="partb-block">
             <!-- Part B input row -->
             <div class="partb-header">
-                <span class="partb-header-label">Annual Medicare Part B Payments Expected ($) <button class="info-icon" onclick="showTip(event,'tt_partb')" aria-label="More info">i</button></span>
+                <span class="partb-header-label">Annual Medicare Part B Payments Expected ($) <button class="info-icon" onclick="showTip(event,'tt_partb')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="part-b-payments">i</button></span>
                 <input type="text" id="m_payments" value="500,000" class="partb-input" inputmode="numeric" placeholder="500,000">
             </div>
             <!-- Revenue at risk + PY on one line -->
@@ -378,7 +380,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                     <option value="0.11">2030 (±11%)</option>
                     <option value="0.12" selected>2031 (±12%)</option>
                 </select>
-                <button class="info-icon" onclick="showTip(event,'tt_py')" aria-label="More info">i</button>
+                <button class="info-icon" onclick="showTip(event,'tt_py')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="performance-year">i</button>
                 <span class="risk-derived-value" id="risk_amount">±$60,000</span>
             </div>
 
@@ -409,7 +411,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
         <div style="border-top: 1px solid var(--border); margin: 20px 0 16px;"></div>
 
         <!-- Collapsible ASM assumptions — at the bottom -->
-        <button class="coll-trigger" onclick="toggleASMAssumptions()" id="asm_coll_btn">
+        <button class="coll-trigger" onclick="toggleASMAssumptions()" id="asm_coll_btn" data-umami-event="asm-assumptions-toggled">
             <span class="coll-chev" id="asm_coll_chev">▶</span>
             <span class="coll-label">Edit ASM Assumptions</span>
             <span class="coll-summary" id="asm_summary_text">Q492: 20 → 85 · Small 2–15 · PY 2031 · Compliant</span>
@@ -424,24 +426,24 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                 <div class="asm-sub-box">
                     <!-- Q492 Before → After -->
                     <div class="q492-wrap" style="margin-bottom:10px;">
-                        <span class="q492-label">MIPS Q492<br>CV-Related Admissions Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q492')" aria-label="More info">i</button></span>
+                        <span class="q492-label">MIPS Q492<br>CV-Related Admissions Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q492')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="q492-admissions">i</button></span>
                         <div class="q492-field">
                             <span>Before ReDS</span>
-                            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q492_before',-10)">−</button><input type="number" id="m_q492_before" value="20" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q492_before',10)">+</button></div>
+                            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q492_before',-10)" data-umami-event="stepper-q492-before" data-umami-event-direction="down">−</button><input type="number" id="m_q492_before" value="20" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q492_before',10)" data-umami-event="stepper-q492-before" data-umami-event-direction="up">+</button></div>
                         </div>
                         <span class="q492-arrow">→</span>
                         <div class="q492-field">
                             <span>After ReDS</span>
-                            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q492_after',-10)">−</button><input type="number" id="m_q492_after" value="85" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q492_after',10)">+</button></div>
+                            <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q492_after',-10)" data-umami-event="stepper-q492-after" data-umami-event-direction="down">−</button><input type="number" id="m_q492_after" value="85" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q492_after',10)" data-umami-event="stepper-q492-after" data-umami-event-direction="up">+</button></div>
                         </div>
                         <span class="q492-pill" id="m_q492_delta">+65 pts</span>
                     </div>
                     <div style="font-size:0.73em;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Other Measures (unchanged by ReDS)</div>
                     <div class="mini-grid">
-                        <div class="mini-item"><label>Q008 Beta-Blocker Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q008')" aria-label="More info">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q008',-10)">−</button><input type="number" id="m_q008" value="65" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q008',10)">+</button></div></div>
-                        <div class="mini-item"><label>Q005 ACEi/ARB/ARNI Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q005')" aria-label="More info">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q005',-10)">−</button><input type="number" id="m_q005" value="60" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q005',10)">+</button></div></div>
-                        <div class="mini-item"><label>Q236 BP Control Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q236')" aria-label="More info">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q236',-10)">−</button><input type="number" id="m_q236" value="55" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q236',10)">+</button></div></div>
-                        <div class="mini-item"><label>Q377 Functional PROM Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q377')" aria-label="More info">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q377',-10)">−</button><input type="number" id="m_q377" value="35" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q377',10)">+</button></div></div>
+                        <div class="mini-item"><label>Q008 Beta-Blocker Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q008')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="q008-beta-blocker">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q008',-10)" data-umami-event="stepper-q008" data-umami-event-direction="down">−</button><input type="number" id="m_q008" value="65" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q008',10)" data-umami-event="stepper-q008" data-umami-event-direction="up">+</button></div></div>
+                        <div class="mini-item"><label>Q005 ACEi/ARB/ARNI Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q005')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="q005-acei-arb-arni">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q005',-10)" data-umami-event="stepper-q005" data-umami-event-direction="down">−</button><input type="number" id="m_q005" value="60" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q005',10)" data-umami-event="stepper-q005" data-umami-event-direction="up">+</button></div></div>
+                        <div class="mini-item"><label>Q236 BP Control Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q236')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="q236-bp-control">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q236',-10)" data-umami-event="stepper-q236" data-umami-event-direction="down">−</button><input type="number" id="m_q236" value="55" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q236',10)" data-umami-event="stepper-q236" data-umami-event-direction="up">+</button></div></div>
+                        <div class="mini-item"><label>Q377 Functional PROM Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_q377')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="q377-functional-prom">i</button></label><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_q377',-10)" data-umami-event="stepper-q377" data-umami-event-direction="down">−</button><input type="number" id="m_q377" value="35" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_q377',10)" data-umami-event="stepper-q377" data-umami-event-direction="up">+</button></div></div>
                     </div>
                 </div>
             </div>
@@ -451,8 +453,8 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                 <div class="asm-sub-title">Cost</div>
                 <div class="asm-sub-box">
                     <div class="f-row" style="border:none;padding:0;">
-                        <label>HF Episode-Based Cost (EBCM) Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_ebcm')" aria-label="More info">i</button></label>
-                        <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_cost',-10)">−</button><input type="number" id="m_cost" value="50" min="0" max="100" style="width:80px;"><button type="button" class="m-step-btn right" onclick="mStep('m_cost',10)">+</button></div>
+                        <label>HF Episode-Based Cost (EBCM) Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_ebcm')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="ebcm-cost">i</button></label>
+                        <div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_cost',-10)" data-umami-event="stepper-ebcm-cost" data-umami-event-direction="down">−</button><input type="number" id="m_cost" value="50" min="0" max="100" style="width:80px;"><button type="button" class="m-step-btn right" onclick="mStep('m_cost',10)" data-umami-event="stepper-ebcm-cost" data-umami-event-direction="up">+</button></div>
                     </div>
                 </div>
             </div>
@@ -463,7 +465,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                 <div class="asm-sub-box">
                     <div class="mini-grid" style="grid-template-columns:1fr 1fr;">
                         <div class="mini-item">
-                            <label>Practice Size (number of clinicians) <button class="info-icon" onclick="showTip(event,'tt_practice')" aria-label="More info">i</button></label>
+                            <label>Practice Size (number of clinicians) <button class="info-icon" onclick="showTip(event,'tt_practice')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="practice-size">i</button></label>
                             <select id="m_practice">
                                 <option value="15">Solo (+15)</option>
                                 <option value="10" selected>Small 2–15 (+10)</option>
@@ -471,7 +473,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                             </select>
                         </div>
                         <div class="mini-item">
-                            <label>PI and IA Compliance <button class="info-icon" onclick="showTip(event,'tt_compliance')" aria-label="More info">i</button></label>
+                            <label>PI and IA Compliance <button class="info-icon" onclick="showTip(event,'tt_compliance')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="compliance">i</button></label>
                             <select id="m_penalty">
                                 <option value="0">Compliant (0)</option>
                                 <option value="-10">PI Fail (−10)</option>
@@ -506,7 +508,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
     </div>
 
     <!-- Breakdown toggle (mobile: hidden by default) -->
-    <button class="bd-toggle" id="bd_toggle_btn" onclick="toggleBreakdown()" style="display:none;">
+    <button class="bd-toggle" id="bd_toggle_btn" onclick="toggleBreakdown()" data-umami-event="breakdown-toggled" style="display:none;">
         <span id="bd_toggle_label">▼ Show breakdown</span>
     </button>
 
@@ -553,6 +555,62 @@ const fmt$ = v => {
     return (v>=0?'+':'−')+a;
 };
 const fmtPct = v => (v>=0?'+':'')+(v*100).toFixed(2)+'%';
+
+
+// ── Umami Analytics helpers ──
+function utrack(name, data) {
+    if (typeof window.umami !== 'undefined') {
+        data ? window.umami.track(name, data) : window.umami.track(name);
+    }
+}
+
+// Track input and select changes with their values
+function attachUmamiTracking() {
+    const trackMap = {
+        'patients_mo':    n => utrack('input-patients-per-month',   { value: parseFloat(n) }),
+        'reimb':          n => utrack('input-reimbursement',         { value: parseFloat(n) }),
+        'overhead':       n => utrack('input-overhead',              { value: parseFloat(n) }),
+        'm_py':           n => utrack('select-performance-year',     { year: n }),
+        'm_q492_before':  n => utrack('input-q492-before',           { value: parseFloat(n) }),
+        'm_q492_after':   n => utrack('input-q492-after',            { value: parseFloat(n) }),
+        'm_q008':         n => utrack('input-q008-score',            { value: parseFloat(n) }),
+        'm_q005':         n => utrack('input-q005-score',            { value: parseFloat(n) }),
+        'm_q236':         n => utrack('input-q236-score',            { value: parseFloat(n) }),
+        'm_q377':         n => utrack('input-q377-score',            { value: parseFloat(n) }),
+        'm_cost':         n => utrack('input-ebcm-cost-score',       { value: parseFloat(n) }),
+        'm_practice':     n => utrack('select-practice-size',        { value: n }),
+        'm_penalty':      n => utrack('select-compliance',           { value: n }),
+    };
+
+    // Debounce to avoid flooding on rapid input
+    const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+    Object.entries(trackMap).forEach(([id, fn]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', debounce(() => fn(el.value), 800));
+    });
+
+    // Part B text input (comma-formatted)
+    const partb = document.getElementById('m_payments');
+    if (partb) partb.addEventListener('change', debounce(() => {
+        utrack('input-part-b-payments', { value: getPartBValue() });
+    }, 800));
+}
+
+// Track toggle actions
+const _origToggleASM = toggleASMAssumptions;
+toggleASMAssumptions = function() {
+    const wasOpen = document.getElementById('asm_coll_body').classList.contains('open');
+    _origToggleASM();
+    utrack('asm-assumptions-panel', { action: wasOpen ? 'closed' : 'opened' });
+};
+
+const _origToggleBreakdown = toggleBreakdown;
+toggleBreakdown = function() {
+    const wasOpen = document.getElementById('bd_detail').classList.contains('visible');
+    _origToggleBreakdown();
+    utrack('breakdown-panel', { action: wasOpen ? 'closed' : 'opened' });
+};
 
 // ── Part B comma formatting ──
 function formatPartB(val) {
@@ -746,6 +804,7 @@ function toggleBreakdown() {
 window.addEventListener('resize', applyMobileDefaults);
 calcROI();
 applyMobileDefaults();
+attachUmamiTracking();
 
 </script>
 
