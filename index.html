@@ -20,8 +20,8 @@
     --text:    #1a2a4a;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { overflow-x: hidden; }
-body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 20px 40px; overflow-x: hidden; }
+html { overflow-x: clip; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 20px 40px; overflow-x: clip; }
 
 /* ── Header ── */
 .hdr { max-width: 1100px; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: flex-start; background: white; border-radius: 10px; padding: 18px 28px; box-shadow: 0 1px 4px rgba(0,0,0,.06); gap: 10px; }
@@ -32,7 +32,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 /* ── Layout ── */
 .page { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
 .col-left  { display: flex; flex-direction: column; gap: 16px; }
-.col-right { position: sticky; top: 24px; }
+.col-right { position: sticky; top: 24px; align-self: start; }
 
 /* ── Cards ── */
 .card { background: var(--card); border-radius: 12px; padding: 22px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.10), 0 6px 20px rgba(0,0,0,.08); }
@@ -114,18 +114,37 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 /* ── Collapsible ── */
 .coll-trigger {
     display: flex; align-items: center; gap: 10px; cursor: pointer; width: 100%;
-    background: #eaf2fa; border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: 9px;
+    background: #f8fbfe; border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: 9px;
     padding: 10px 14px; margin-bottom: 0; text-align: left;
-    transition: background .15s, border-color .15s;
+    transition: background .2s, border-color .2s, border-radius .2s, border-bottom-color .2s;
 }
 .coll-trigger:hover { background: #e4f4fc; border-color: #29aae4; }
+
+/* When open: flatten bottom corners, remove bottom border, blend into revealed content */
+.coll-trigger.is-open {
+    border-bottom-color: transparent;
+    border-radius: 9px 9px 0 0;
+    background: #f8fbfe;
+}
+.coll-trigger.is-open:hover { background: #e4f4fc; }
+
 .coll-chev { font-size: 0.7em; color: var(--blue); transition: transform .22s; flex-shrink: 0; }
 .coll-chev.open { transform: rotate(90deg); }
 .coll-label { font-size: 0.83em; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
 .coll-summary { font-size: 0.74em; color: #888; margin-left: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
+
+/* When closed: normal pill */
 .coll-body { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .35s ease, opacity .25s ease; }
-.coll-body.open { max-height: 1000px; opacity: 1; }
-.coll-inner { padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+/* When open: no top radius — connects flush to the trigger above */
+.coll-body.open {
+    max-height: 1000px; opacity: 1;
+    border: 1px solid var(--border); border-top: none;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 0 9px 9px;
+    background: #f8fbfe;
+}
+.coll-inner { padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 12px; }
 
 /* ── Part B block: input + derived risk inline ── */
 .partb-block { margin-bottom: 0; }
@@ -386,16 +405,16 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
         <div class="partb-block">
             <!-- Part B input row -->
             <div class="partb-header">
-                <span class="partb-header-label">Annual Medicare Part B Payments Expected ($) <button class="info-icon" onclick="showTip(event,'tt_partb')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="part-b-payments">i</button></span>
-                <input type="text" id="m_payments" value="500,000" class="partb-input" inputmode="numeric" placeholder="500,000">
+                <span class="partb-header-label">Total Part B Payments Expected ($) <button class="info-icon" onclick="showTip(event,'tt_partb')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="part-b-payments">i</button></span>
+                <input type="text" id="m_payments" value="1,000,000" class="partb-input" inputmode="numeric" placeholder="500,000">
             </div>
             <!-- Revenue at risk + PY on one line -->
             <div class="risk-inline-row">
                 <span class="risk-derived-label">Total Revenue at Risk</span>
                 <select id="m_py" class="risk-py-select">
-                    <option value="0.09">2027 (±9%)</option>
+                    <option value="0.09" selected>2027 (±9%)</option>
                     <option value="0.09">2028 (±9%)</option>
-                    <option value="0.10" selected>2029 (±10%)</option>
+                    <option value="0.10">2029 (±10%)</option>
                     <option value="0.11">2030 (±11%)</option>
                     <option value="0.12">2031 (±12%)</option>
                 </select>
@@ -451,7 +470,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 
             <!-- Cost -->
             <div>
-                <div class="asm-sub-title">Cost</div>
+                <div class="asm-sub-title">1. Cost</div>
                 <div class="asm-quality-subtitle">Your estimated episode cost versus other ASM cardiologists<br><span style="font-weight:500; font-style:italic;">(Lower cost → Higher percentile, 50% is the median)</span></div>
                 <div class="asm-sub-box">
                     <div style="font-size:0.75em; color:#2a3f5a; font-weight:700; padding-bottom:6px;">HF Episode-Based Cost (EBCM) Score (0–100%) <button class="info-icon" onclick="showTip(event,'tt_ebcm')" aria-label="More info" data-umami-event="info-viewed" data-umami-event-topic="ebcm-cost">i</button></div>
@@ -463,7 +482,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
                         <span class="q492-arrow">→</span>
                         <div class="q492-field">
                             <span>After ReDS</span>
-                            <div class="pct-input-wrap"><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_cost_after',-10)" data-umami-event="stepper-ebcm-after" data-umami-event-direction="down">−</button><input type="number" id="m_cost_after" value="60" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_cost_after',10)" data-umami-event="stepper-ebcm-after" data-umami-event-direction="up">+</button></div><span class="pct-symbol">%</span></div>
+                            <div class="pct-input-wrap"><div class="m-step-wrap"><button type="button" class="m-step-btn left" onclick="mStep('m_cost_after',-10)" data-umami-event="stepper-ebcm-after" data-umami-event-direction="down">−</button><input type="number" id="m_cost_after" value="75" min="0" max="100"><button type="button" class="m-step-btn right" onclick="mStep('m_cost_after',10)" data-umami-event="stepper-ebcm-after" data-umami-event-direction="up">+</button></div><span class="pct-symbol">%</span></div>
                         </div>
                     </div>
                 </div>
@@ -471,7 +490,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 
             <!-- Quality -->
             <div>
-                <div class="asm-sub-title">Quality</div>
+                <div class="asm-sub-title">2. Quality</div>
                 <div class="asm-quality-subtitle">Your estimated performance versus other ASM cardiologists (Percentile, 50% is the median)</div>
                 <div class="asm-sub-box">
                     <!-- Q492 Before → After -->
@@ -500,7 +519,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 
             <!-- Adjustments -->
             <div>
-                <div class="asm-sub-title">Adjustments</div>
+                <div class="asm-sub-title">3. Adjustments</div>
                 <div class="asm-sub-box">
                     <div class="mini-grid" style="grid-template-columns:1fr 1fr;">
                         <div class="mini-item">
@@ -564,7 +583,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
     </div><!-- /breakdown bd-detail -->
 
     <div class="disclaimer">
-        Figures are estimates based on modeled defaults for items CMS has not yet published: the logistic exchange function parameters, ASM cohort benchmark distributions, incentive pool scaling factor, and quality measure decile thresholds. All figures will require recalibration once CMS publishes PY2027 benchmark data (expected 2026–2027). Reference: <a href="https://www.cms.gov/priorities/innovation/innovation-models/asm" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;">CMS Ambulatory Specialty Model (ASM) ↗</a>
+        These calculations use modeled assumptions. Figures should be recalibrated once PY2027 ASM benchmarks are released. Reference: <a href="https://www.cms.gov/priorities/innovation/innovation-models/asm" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;">CMS Ambulatory Specialty Model (ASM) ↗</a>
     </div>
 
 </div><!-- /roi-card -->
@@ -774,9 +793,10 @@ function calcROI(){
 
 // ── Toggles ──
 function toggleASMAssumptions(){
-    const body=g('asm_coll_body'),chev=g('asm_coll_chev');
+    const body=g('asm_coll_body'),chev=g('asm_coll_chev'),btn=g('asm_coll_btn');
     const open=body.classList.toggle('open');
     chev.classList.toggle('open',open);
+    btn.classList.toggle('is-open',open);
 }
 
 // ── Wire inputs ──
@@ -922,7 +942,8 @@ attachUmamiTracking();
 <div class="tooltip-box" id="tt_ebcm">
   <button class="tooltip-close" onclick="closeAllTooltips()">✕</button>
   <strong>HF Episode-Based Cost Measure</strong>
-  <p>Standardized total Medicare cost (Parts A, B & D) per HF episode. Scored 1–10 vs. cohort median (median = 6 pts, not 5). Points above/below assigned by linear interpolation at ±0.5 to ±2.5 standard deviations. Your entire 50% cost score rests on this one measure.</p>
+  <p>Standardized total Medicare cost (Parts A, B & D) per HF episode. Scored 1–10 vs. cohort median (median = 6 pts, not 5). Points assigned by linear interpolation at ±0.5 to ±2.5 standard deviations.</p>
+  <p><strong>Default assumption (40%→75%):</strong> A practice starting at the 40th percentile (slightly above median cost, ~$27,000/episode) reduces episode cost by ~$7,500 through a 50% reduction in hospitalizations (~$15,000 each). This moves the practice to approximately the 75th percentile (~$19,500/episode), based on a modeled cohort median of $25,000 and SD of $8,000. Only direct hospitalization savings are assumed — no indirect cost reductions.</p>
   <div class="tt-links"><a href="https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-H/part-512/subpart-G/section-512.730" target="_blank" rel="noopener">📋 42 CFR §512.730 — Cost Category</a><a href="https://www.vbca.com/insights/ambulatory-specialty-model-explained/" target="_blank" rel="noopener">📋 VBCA — ASM Cost Explained</a></div>
 </div>
 <div class="tooltip-box" id="tt_practice">
