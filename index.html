@@ -184,7 +184,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .neu { color: var(--muted); }
 
 /* Disclaimer */
-.disclaimer { font-size: 0.71em; color: #5a7391; line-height: 1.55; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.disclaimer { font-size: 0.76em; color: var(--accent); line-height: 1.65; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); opacity: 0.85; }
 
 /* Mobile steppers — hidden on desktop */
 .m-step-wrap { display: contents; }
@@ -564,8 +564,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
     </div><!-- /breakdown bd-detail -->
 
     <div class="disclaimer">
-        Figures are estimates pending CMS publication of final logistic parameters.<br><br>
-        Reference: <a href="https://www.cms.gov/priorities/innovation/innovation-models/asm" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600;">CMS Ambulatory Specialty Model (ASM) ↗</a>
+        Figures are estimates based on modeled defaults for items CMS has not yet published: the logistic exchange function parameters, ASM cohort benchmark distributions, incentive pool scaling factor, and quality measure decile thresholds. All figures will require recalibration once CMS publishes PY2027 benchmark data (expected 2026–2027). Reference: <a href="https://www.cms.gov/priorities/innovation/innovation-models/asm" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;">CMS Ambulatory Specialty Model (ASM) ↗</a>
     </div>
 
 </div><!-- /roi-card -->
@@ -761,7 +760,7 @@ function calcROI(){
     heroEl.innerText = (yrROI < 0 ? '−' : '') + absAmt;
     heroEl.className='roi-dollar '+(yrROI>=0?'pos':'neg');
     const pctEl=g('s_roi_pct');
-    pctEl.innerText = (roiPct < 0 ? '−' : '') + Math.abs(roiPct).toFixed(1)+'%';
+    pctEl.innerText = (roiPct < 0 ? '−' : '') + Math.abs(Math.round(roiPct)) + '%';
     pctEl.className='roi-pct-hero '+(roiPct>=0?'pos':'neg');
 
     g('s_rev_yr').innerText=fmt$(yrRev);
